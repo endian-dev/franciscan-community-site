@@ -2,7 +2,32 @@ import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
-const pageRoute = z.string().regex(/^\/(?:[a-z0-9-]+\/?)*$/);
+const isRouteSegment = (segment: string) =>
+  segment.length > 0 &&
+  !segment.startsWith("-") &&
+  !segment.endsWith("-") &&
+  !segment.includes("--") &&
+  Array.from(segment).every(
+    (char) =>
+      (char >= "a" && char <= "z") ||
+      (char >= "0" && char <= "9") ||
+      char === "-"
+  );
+
+const pageRoute = z.string().refine(
+  (route) => {
+    if (route === "/") {
+      return true;
+    }
+
+    if (!route.startsWith("/") || route.endsWith("/")) {
+      return false;
+    }
+
+    return route.slice(1).split("/").every(isRouteSegment);
+  },
+  { message: "Route must be / or a lowercase path such as /who-we-are." }
+);
 const optionalUrl = z.union([z.literal(""), z.url()]);
 
 const pages = defineCollection({
