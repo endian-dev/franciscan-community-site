@@ -37,10 +37,22 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
               navPages.map((page) => {
                 const href = page.data.route;
                 const isCurrent = normalizePath(href) === currentPath;
+                const isHome = href === "/";
+                const isCta = href === "/get-involved";
 
                 return (
-                  <li>
+                  <li
+                    class:list={[
+                      "primary-nav__item",
+                      isHome && "primary-nav__item--home",
+                      isCta && "primary-nav__item--cta"
+                    ]}
+                  >
                     <a
+                      class:list={[
+                        "primary-nav__link",
+                        isCta && "primary-nav__link--cta"
+                      ]}
                       href={href}
                       aria-current={isCurrent ? "page" : undefined}
                     >
@@ -193,7 +205,7 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
     list-style: none;
   }
 
-  .primary-nav a {
+  .primary-nav__link {
     display: inline-flex;
     align-items: center;
     min-height: 2.4rem;
@@ -207,16 +219,36 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
     text-decoration: none;
   }
 
-  .primary-nav a:hover {
+  .primary-nav__link:hover {
     border-color: rgb(139 82 57 / 0.3);
     background: rgb(255 253 248 / 0.85);
     color: var(--color-clay);
   }
 
-  .primary-nav a[aria-current="page"] {
+  .primary-nav__link[aria-current="page"] {
     border-color: rgb(36 89 77 / 0.22);
     background: var(--color-surface);
     box-shadow: inset 0 -0.18rem 0 rgb(167 122 42 / 0.45);
+  }
+
+  .primary-nav__link--cta {
+    border-color: var(--color-green);
+    background: var(--color-green);
+    color: #fffdf8;
+    box-shadow: none;
+  }
+
+  .primary-nav__link--cta:hover {
+    border-color: var(--color-clay);
+    background: var(--color-clay);
+    color: #fffdf8;
+  }
+
+  .primary-nav__link--cta[aria-current="page"] {
+    border-color: var(--color-green-dark);
+    background: var(--color-green-dark);
+    color: #fffdf8;
+    box-shadow: inset 0 -0.18rem 0 rgb(255 248 220 / 0.62);
   }
 
   .site-main {
@@ -587,11 +619,15 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
       padding-top: 2rem;
     }
 
-    .primary-nav li {
+    .primary-nav__item--home {
+      display: none;
+    }
+
+    .primary-nav__item {
       flex: 1 1 auto;
     }
 
-    .primary-nav a {
+    .primary-nav__link {
       width: 100%;
       justify-content: center;
     }

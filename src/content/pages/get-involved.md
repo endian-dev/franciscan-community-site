@@ -2,7 +2,7 @@
 title: Get Involved
 route: /get-involved
 navLabel: Get Involved
-navOrder: 30
+navOrder: 60
 description: Learn about becoming a Secular Franciscan.
 ---
 

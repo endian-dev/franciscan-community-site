@@ -119,6 +119,28 @@ test("primary navigation links work", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "FAQ" })).toBeVisible();
 });
 
+test("primary navigation keeps Get Involved as the final CTA", async ({
+  page
+}) => {
+  await page.goto("/");
+
+  const nav = page.getByRole("navigation", { name: "Primary navigation" });
+  const viewportWidth = page.viewportSize()?.width ?? 0;
+  const expectedLinks =
+    viewportWidth <= 480
+      ? ["Who We Are", "News", "FAQ", "Get Involved"]
+      : ["Home", "Who We Are", "News", "FAQ", "Get Involved"];
+
+  await expect(nav.getByRole("link")).toHaveText(expectedLinks);
+
+  const cta = nav.getByRole("link", { name: "Get Involved" });
+  await expect(cta).toHaveClass(/primary-nav__link--cta/);
+
+  if (viewportWidth <= 480) {
+    await expect(nav.getByRole("link", { name: "Home" })).toHaveCount(0);
+  }
+});
+
 test("keeps key layouts readable across configured viewports", async ({
   page
 }) => {
