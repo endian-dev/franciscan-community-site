@@ -52,11 +52,12 @@ Enable the features available for this repository:
 Configure Cloudflare Workers Builds as the single production deploy path:
 
 - Production branch: `main`
+- Production URL: `https://stmargaretofcortona.endian.dev`
 - Root directory: `/`
 - Build command: `pnpm build`
 - Deploy command: `pnpm deploy`
 - Package manager setup: Corepack enabled, using pnpm from `package.json`
-- Non-production branch builds: enable only if PR preview URLs are desired
+- Non-production branch builds: enabled for PR preview URLs
 
 Do not also add a GitHub Actions production deploy unless Workers Builds is
 disabled or the deploy ownership is intentionally changed.

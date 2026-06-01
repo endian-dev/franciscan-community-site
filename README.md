@@ -41,6 +41,8 @@ The production target is Cloudflare Workers Static Assets. Deployment
 configuration lives in `wrangler.jsonc`; the initial static build publishes
 Astro's `dist/` directory.
 
+Production URL: <https://stmargaretofcortona.endian.dev>
+
 pnpm dependency build-script approvals are recorded in `pnpm-workspace.yaml`.
 Keep that file in sync when dependency changes introduce new packages that need
 install-time build scripts.
@@ -54,6 +56,7 @@ Use Cloudflare Workers Builds as the single production deploy path:
 - package manager: Corepack with the pinned pnpm version from `package.json`
 
 GitHub Actions is used as the merge gate and should not deploy production.
+Workers Builds also runs non-production branch builds for PR preview URLs.
 
 ## Branch Workflow
 
