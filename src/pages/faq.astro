@@ -20,11 +20,11 @@ const renderedFaqs = await Promise.all(
     <PageContent />
   </article>
 
-  <section class="entry-list" aria-labelledby="faq-list-heading">
+  <section class="entry-list faq-list" aria-labelledby="faq-list-heading">
     <h2 id="faq-list-heading">Questions and answers</h2>
     {
       renderedFaqs.map(({ entry, Content }) => (
-        <article class="content list-entry">
+        <article class="content list-entry faq-entry">
           <h3>{entry.data.question}</h3>
           <Content />
         </article>

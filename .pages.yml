@@ -15,12 +15,14 @@ media:
     input: public/uploads/images
     output: /uploads/images
     categories: [image]
+    extensions: [webp, jpg, jpeg, png]
     rename: safe
   - name: documents
     label: Documents
     input: public/uploads/documents
     output: /uploads/documents
     categories: [document]
+    extensions: [pdf]
     rename: safe
 
 content:
@@ -41,6 +43,23 @@ content:
         label: Site description
         type: text
         required: true
+      - name: homeHero
+        label: Home hero media
+        type: object
+        required: true
+        fields:
+          - name: image
+            label: Hero image
+            type: image
+            description: Optional approved image for the home-page hero. Leave empty until an approved asset is ready.
+            options:
+              media: images
+              extensions: [webp, jpg, jpeg, png]
+              rename: safe
+          - name: imageAlt
+            label: Hero image alt text
+            type: string
+            description: Required when a hero image is selected.
       - name: contact
         label: Contact
         type: object
@@ -130,6 +149,7 @@ content:
         options:
           format: markdown
           media: images
+          extensions: [webp, jpg, jpeg, png]
           path: "."
           rename: safe
 
@@ -164,6 +184,7 @@ content:
         options:
           format: markdown
           media: images
+          extensions: [webp, jpg, jpeg, png]
           path: "."
           rename: safe
 
@@ -214,5 +235,6 @@ content:
         options:
           format: markdown
           media: images
+          extensions: [webp, jpg, jpeg, png]
           path: "."
           rename: safe

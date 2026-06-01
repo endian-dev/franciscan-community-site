@@ -1,11 +1,61 @@
 ---
-import MarkdownPage from "@/components/MarkdownPage.astro";
 import { requirePageByRoute } from "@/lib/content";
+import { siteData } from "@/lib/site-data";
 import SiteLayout from "@/layouts/SiteLayout.astro";
+import { render } from "astro:content";
 
 const page = await requirePageByRoute("/");
+const { Content } = await render(page);
+const heroImage = siteData.homeHero.image;
+const hasHeroImage = heroImage.length > 0;
 ---
 
 <SiteLayout title={page.data.title} description={page.data.description}>
-  <MarkdownPage page={page} />
+  <section class="home-hero" aria-labelledby="home-heading">
+    <div class="home-hero__copy">
+      <p class="eyebrow">Secular Franciscans in Las Vegas</p>
+      <h1 id="home-heading">{page.data.title}</h1>
+      <p class="home-hero__lede">
+        A local fraternity for Catholics discerning prayer, fraternity, service,
+        and the Gospel way of life in the footsteps of Francis and Clare.
+      </p>
+      <div class="home-hero__actions" aria-label="Home page actions">
+        <a class="button-link" href="/get-involved">Get involved</a>
+        <a class="button-link button-link--secondary" href="/faq">
+          Read the FAQ
+        </a>
+      </div>
+    </div>
+
+    <div
+      class:list={[
+        "home-hero__media",
+        !hasHeroImage && "home-hero__media--empty"
+      ]}
+    >
+      {
+        hasHeroImage ? (
+          <img
+            class="home-hero__image"
+            src={heroImage}
+            alt={siteData.homeHero.imageAlt}
+            loading="eager"
+          />
+        ) : (
+          <div class="home-hero__reflection" aria-hidden="true">
+            <p class="home-hero__reflection-main">Pax et Bonum</p>
+            <ul class="home-hero__reflection-details">
+              <li>Prayer</li>
+              <li>Fraternity</li>
+              <li>Service</li>
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <article class="content content--home">
+    <Content />
+  </article>
 </SiteLayout>

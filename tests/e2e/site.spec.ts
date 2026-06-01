@@ -1,4 +1,12 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+async function expectNoHorizontalOverflow(page: Page) {
+  const overflow = await page.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+  );
+
+  expect(overflow).toBeLessThanOrEqual(1);
+}
 
 test("serves the home page", async ({ page }) => {
   const response = await page.goto("/");
@@ -12,6 +20,11 @@ test("serves the home page", async ({ page }) => {
       name: "Welcome to the St. Margaret of Cortona Fraternity"
     })
   ).toBeVisible();
+  await expect(
+    page.getByRole("img", {
+      name: "Saint Thomas More Region Secular Franciscan members gathered around a regional banner."
+    })
+  ).toHaveAttribute("src", "/uploads/images/new-rec-2025-2028.jpg");
   await expect(page.getByText("Saint Thomas More Region")).toBeVisible();
 });
 
@@ -53,9 +66,11 @@ test("serves each fixed content route", async ({ page }) => {
 test("renders static contact information without a dead form", async ({ page }) => {
   await page.goto("/get-involved");
 
-  const contact = page.getByLabel("Contact");
+  const contact = page.locator(".contact-info");
 
   await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
+  await expect(contact.getByText("4240 Miaomiao Ave")).toBeVisible();
+  await expect(contact.getByText("North Las Vegas, NV 89084")).toBeVisible();
   await expect(
     contact.getByRole("link", { name: "stmargaretofcortona@endian.dev" })
   ).toBeVisible();
@@ -96,9 +111,57 @@ test("renders resource links and text-only resources intentionally", async ({
 test("primary navigation links work", async ({ page }) => {
   await page.goto("/");
 
-  await page.getByRole("link", { name: "FAQ" }).click();
+  await page
+    .getByRole("navigation", { name: "Primary navigation" })
+    .getByRole("link", { name: "FAQ" })
+    .click();
   await expect(page).toHaveURL("/faq");
   await expect(page.getByRole("heading", { name: "FAQ" })).toBeVisible();
+});
+
+test("keeps key layouts readable across configured viewports", async ({
+  page
+}) => {
+  await page.goto("/");
+
+  await expect(
+    page.getByRole("navigation", { name: "Primary navigation" })
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", {
+      name: "Welcome to the St. Margaret of Cortona Fraternity"
+    })
+  ).toBeVisible();
+  await expect(
+    page.locator(".home-hero__actions").getByRole("link", {
+      name: "Get involved"
+    })
+  ).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+
+  await page.goto("/faq");
+  await expect(
+    page.getByRole("heading", { name: "Questions and answers" })
+  ).toBeVisible();
+  await expect(page.locator(".faq-entry").first()).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+
+  await page.goto("/news");
+  await expect(
+    page.getByRole("heading", { name: "Regional Franciscan News" })
+  ).toBeVisible();
+  await expect(page.locator(".resource-entry").first()).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "View Summer 2025 PDF" })
+  ).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+
+  await page.goto("/get-involved");
+  await expect(page.locator(".site-footer")).toContainText("4240 Miaomiao Ave");
+  await expect(page.locator(".site-footer")).toContainText(
+    "North Las Vegas, NV 89084"
+  );
+  await expectNoHorizontalOverflow(page);
 });
 
 test("serves the custom 404 page for missing routes", async ({ page }) => {

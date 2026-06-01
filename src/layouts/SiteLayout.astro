@@ -11,6 +11,7 @@ const { title, description = siteData.description } = Astro.props;
 const navPages = await getPages();
 const fullTitle = title === siteData.name ? title : `${title} | ${siteData.name}`;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+const address = siteData.contact.address;
 
 const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
 ---
@@ -25,25 +26,33 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
   </head>
   <body>
     <header class="site-header">
-      <a class="site-title" href="/">{siteData.name}</a>
-      <nav aria-label="Primary navigation">
-        <ul>
-          {
-            navPages.map((page) => {
-              const href = page.data.route;
-              const isCurrent = normalizePath(href) === currentPath;
+      <div class="site-header__inner">
+        <a class="site-title" href="/">
+          <span class="site-title__name">{siteData.name}</span>
+          <span class="site-title__context">Secular Franciscan Order</span>
+        </a>
+        <nav class="primary-nav" aria-label="Primary navigation">
+          <ul>
+            {
+              navPages.map((page) => {
+                const href = page.data.route;
+                const isCurrent = normalizePath(href) === currentPath;
 
-              return (
-                <li>
-                  <a href={href} aria-current={isCurrent ? "page" : undefined}>
-                    {page.data.navLabel}
-                  </a>
-                </li>
-              );
-            })
-          }
-        </ul>
-      </nav>
+                return (
+                  <li>
+                    <a
+                      href={href}
+                      aria-current={isCurrent ? "page" : undefined}
+                    >
+                      {page.data.navLabel}
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </nav>
+      </div>
     </header>
 
     <main class="site-main">
@@ -51,90 +60,194 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
     </main>
 
     <footer class="site-footer">
-      <p class="footer-name">{siteData.name}</p>
-      <address>
-        <span>{siteData.contact.name}</span>
-        <span>{siteData.contact.phone}</span>
-        <a href={`mailto:${siteData.contact.email}`}>{siteData.contact.email}</a>
-      </address>
-      <p>{siteData.footer.text}</p>
+      <div class="site-footer__inner">
+        <div class="site-footer__summary">
+          <p class="footer-name">{siteData.name}</p>
+          <p>{siteData.description}</p>
+          <p>{siteData.footer.text}</p>
+        </div>
+        <address class="footer-contact" aria-label="Contact information">
+          <span>{siteData.contact.name}</span>
+          <span>{address.street}</span>
+          <span>{address.city}, {address.region} {address.postalCode}</span>
+          <span>{siteData.contact.phone}</span>
+          <a href={`mailto:${siteData.contact.email}`}>
+            {siteData.contact.email}
+          </a>
+        </address>
+      </div>
     </footer>
   </body>
 </html>
 
 <style is:global>
   :root {
-    color: #1d2521;
-    background: #fffdfa;
-    font-family:
-      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      sans-serif;
+    --color-bg: #fbf7f0;
+    --color-surface: #fffdf8;
+    --color-surface-strong: #f1e6d8;
+    --color-ink: #1c2320;
+    --color-muted: #58645f;
+    --color-green: #24594d;
+    --color-green-dark: #143b34;
+    --color-clay: #8b5239;
+    --color-gold: #a77a2a;
+    --color-line: #d8cab8;
+    --color-focus: #1f6f9f;
+    --shadow-soft: 0 1rem 2.5rem rgb(34 31 26 / 0.08);
+    --radius: 0.5rem;
+    --measure: 48rem;
+    --font-body:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    --font-heading: Georgia, "Times New Roman", serif;
+    color: var(--color-ink);
+    background: var(--color-bg);
+    font-family: var(--font-body);
+    font-size: 100%;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--color-bg);
   }
 
   body {
     min-height: 100vh;
     margin: 0;
+    background:
+      linear-gradient(180deg, rgb(255 253 248 / 0.9), rgb(251 247 240 / 0.96)),
+      var(--color-bg);
+    color: var(--color-ink);
+    text-rendering: optimizeLegibility;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
   }
 
   a {
-    color: #225f52;
+    color: var(--color-green);
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.18em;
   }
 
   a:hover {
-    color: #5d3f27;
+    color: var(--color-clay);
   }
 
-  .site-header,
+  a:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 0.2rem;
+    border-radius: 0.2rem;
+  }
+
+  .site-header__inner,
   .site-main,
-  .site-footer {
-    width: min(100% - 2rem, 58rem);
+  .site-footer__inner {
+    width: min(calc(100% - 2rem), 68rem);
     margin-inline: auto;
   }
 
   .site-header {
-    padding: 2rem 0 1.25rem;
-    border-bottom: 1px solid #d7d0c7;
+    border-bottom: 1px solid var(--color-line);
+    background: rgb(251 247 240 / 0.94);
+  }
+
+  .site-header__inner {
+    display: grid;
+    gap: 1rem;
+    padding: 1.25rem 0;
   }
 
   .site-title {
-    color: #1d2521;
-    font-size: 1.25rem;
+    display: grid;
+    gap: 0.2rem;
+    max-width: 27rem;
+    color: var(--color-ink);
+    line-height: 1.15;
     font-weight: 700;
     text-decoration: none;
   }
 
-  nav ul {
+  .site-title__name {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+  }
+
+  .site-title__context {
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .primary-nav ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem 1rem;
+    gap: 0.5rem;
     padding: 0;
-    margin: 1rem 0 0;
+    margin: 0;
     list-style: none;
   }
 
-  nav a {
-    font-weight: 600;
+  .primary-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.4rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    color: var(--color-green-dark);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
     text-decoration: none;
   }
 
-  nav a[aria-current="page"] {
-    text-decoration: underline;
-    text-underline-offset: 0.25em;
+  .primary-nav a:hover {
+    border-color: rgb(139 82 57 / 0.3);
+    background: rgb(255 253 248 / 0.85);
+    color: var(--color-clay);
+  }
+
+  .primary-nav a[aria-current="page"] {
+    border-color: rgb(36 89 77 / 0.22);
+    background: var(--color-surface);
+    box-shadow: inset 0 -0.18rem 0 rgb(167 122 42 / 0.45);
   }
 
   .site-main {
-    padding: 2.5rem 0;
+    padding: 2.75rem 0 3.5rem;
   }
 
   .site-footer {
-    padding: 1.5rem 0 2rem;
-    border-top: 1px solid #d7d0c7;
-    color: #46564f;
-    font-size: 0.95rem;
+    border-top: 1px solid var(--color-line);
+    background: var(--color-green-dark);
+    color: #f7efe4;
+  }
+
+  .site-footer__inner {
+    display: grid;
+    gap: 1.5rem;
+    padding: 2rem 0;
+  }
+
+  .site-footer p {
+    margin: 0;
+    color: rgb(247 239 228 / 0.82);
+    line-height: 1.6;
+  }
+
+  .site-footer__summary {
+    display: grid;
+    gap: 0.45rem;
   }
 
   .footer-name {
-    color: #1d2521;
+    color: #fffdf8;
     font-weight: 700;
   }
 
@@ -145,34 +258,51 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
     font-style: normal;
   }
 
+  .footer-contact {
+    margin: 0;
+    color: rgb(247 239 228 / 0.9);
+    line-height: 1.6;
+  }
+
+  .footer-contact a {
+    color: #fff8dc;
+  }
+
+  .footer-contact a:hover {
+    color: #fff;
+  }
+
   .content {
-    max-width: 46rem;
+    max-width: var(--measure);
   }
 
   .content h1 {
-    margin: 0 0 1.5rem;
-    color: #20382f;
-    font-size: clamp(2rem, 7vw, 3.75rem);
-    line-height: 1.05;
+    margin: 0 0 1.25rem;
+    color: var(--color-green-dark);
+    font-family: var(--font-heading);
+    font-size: 2.35rem;
+    line-height: 1.08;
   }
 
   .content h2 {
-    margin: 2rem 0 0.75rem;
-    color: #20382f;
+    margin: 2.1rem 0 0.75rem;
+    color: var(--color-green-dark);
+    font-family: var(--font-heading);
     font-size: 1.5rem;
-    line-height: 1.2;
+    line-height: 1.22;
   }
 
   .content h3 {
     margin: 0 0 0.75rem;
-    color: #20382f;
+    color: var(--color-green-dark);
+    font-family: var(--font-heading);
     font-size: 1.15rem;
     line-height: 1.35;
   }
 
   .content p,
   .content li {
-    color: #33443d;
+    color: #37443f;
     font-size: 1.05rem;
     line-height: 1.7;
   }
@@ -181,21 +311,302 @@ const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
     margin: 1rem 0;
   }
 
+  .content > :first-child {
+    margin-top: 0;
+  }
+
+  .content > :last-child {
+    margin-bottom: 0;
+  }
+
+  .content strong {
+    color: var(--color-green-dark);
+  }
+
   .entry-list {
     display: grid;
-    gap: 1.5rem;
-    margin-top: 2rem;
+    gap: 1rem;
+    max-width: 58rem;
+    margin-top: 2.25rem;
+  }
+
+  .entry-list h2 {
+    margin: 0 0 0.5rem;
+    color: var(--color-green-dark);
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    line-height: 1.2;
   }
 
   .list-entry {
-    padding-top: 1.5rem;
-    border-top: 1px solid #d7d0c7;
+    max-width: none;
+    padding: 1.25rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .faq-entry {
+    border-left: 0.35rem solid var(--color-green);
+  }
+
+  .faq-entry h3 {
+    max-width: 42rem;
+    font-size: 1.2rem;
+  }
+
+  .resource-entry {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .resource-entry__label {
+    margin: 0;
+    color: var(--color-clay);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .resource-entry__body {
+    max-width: 46rem;
+  }
+
+  .resource-entry__body p {
+    margin: 0;
+  }
+
+  .resource-entry__action {
+    margin: 0.25rem 0 0;
+  }
+
+  .button-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.68rem 1rem;
+    border: 1px solid var(--color-green);
+    border-radius: var(--radius);
+    background: var(--color-green);
+    color: #fffdf8;
+    font-weight: 800;
+    line-height: 1.15;
+    text-decoration: none;
+  }
+
+  .button-link:hover {
+    border-color: var(--color-clay);
+    background: var(--color-clay);
+    color: #fffdf8;
+  }
+
+  .button-link--secondary {
+    border-color: rgb(36 89 77 / 0.35);
+    background: transparent;
+    color: var(--color-green-dark);
+  }
+
+  .button-link--secondary:hover {
+    background: rgb(139 82 57 / 0.08);
+    color: var(--color-clay);
   }
 
   .contact-info {
-    max-width: 46rem;
+    max-width: var(--measure);
     padding-top: 1.5rem;
-    margin-top: 2rem;
-    border-top: 1px solid #d7d0c7;
+    margin-top: 2.25rem;
+    border-top: 1px solid var(--color-line);
+  }
+
+  .contact-info h2 {
+    margin-top: 0;
+  }
+
+  .status {
+    color: var(--color-clay);
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .home-hero {
+    display: grid;
+    gap: 2rem;
+    align-items: stretch;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .home-hero__copy {
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--color-clay);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .home-hero h1 {
+    max-width: 44rem;
+    margin: 0;
+    color: var(--color-green-dark);
+    font-family: var(--font-heading);
+    font-size: 2.55rem;
+    line-height: 1.05;
+  }
+
+  .home-hero__lede {
+    max-width: 34rem;
+    margin: 0;
+    color: #34413c;
+    font-size: 1.12rem;
+    line-height: 1.65;
+  }
+
+  .home-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
+  }
+
+  .home-hero__media {
+    min-height: 16rem;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .home-hero__image {
+    width: 100%;
+    height: 100%;
+    min-height: 16rem;
+    object-fit: cover;
+  }
+
+  .home-hero__reflection {
+    display: grid;
+    min-height: 100%;
+    padding: 1.5rem;
+    background:
+      linear-gradient(135deg, rgb(36 89 77 / 0.12), transparent 52%),
+      var(--color-surface-strong);
+    color: var(--color-green-dark);
+  }
+
+  .home-hero__reflection-main {
+    align-self: end;
+    max-width: 14rem;
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .home-hero__reflection-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-self: end;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    list-style: none;
+  }
+
+  .home-hero__reflection-details li {
+    padding: 0.45rem 0.6rem;
+    border: 1px solid rgb(36 89 77 / 0.2);
+    border-radius: var(--radius);
+    background: rgb(255 253 248 / 0.58);
+    color: var(--color-green-dark);
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .content--home {
+    margin-top: 2.5rem;
+  }
+
+  @media (min-width: 44rem) {
+    .site-header__inner,
+    .site-footer__inner {
+      width: min(calc(100% - 3rem), 68rem);
+    }
+
+    .site-header__inner {
+      grid-template-columns: minmax(14rem, 1fr) auto;
+      align-items: center;
+    }
+
+    .primary-nav ul {
+      justify-content: flex-end;
+    }
+
+    .content h1 {
+      font-size: 3.15rem;
+    }
+
+    .home-hero h1 {
+      font-size: 3.45rem;
+    }
+
+    .site-footer__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.55fr);
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .home-hero {
+      grid-template-columns: minmax(0, 1.12fr) minmax(18rem, 0.88fr);
+      padding: 1rem 0 3rem;
+    }
+
+    .home-hero__media {
+      min-height: 24rem;
+    }
+
+    .home-hero__image {
+      min-height: 24rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .site-main {
+      padding-top: 2rem;
+    }
+
+    .primary-nav li {
+      flex: 1 1 auto;
+    }
+
+    .primary-nav a {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .content h1,
+    .home-hero h1 {
+      font-size: 2.15rem;
+    }
+
+    .list-entry {
+      padding: 1rem;
+    }
+
+    .contact-info {
+      padding-top: 1.25rem;
+    }
   }
 </style>
