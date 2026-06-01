@@ -1,0 +1,201 @@
+---
+import { getPublishedPages } from "@/lib/content";
+import { siteData } from "@/lib/site-data";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = siteData.description } = Astro.props;
+const navPages = await getPublishedPages();
+const fullTitle = title === siteData.name ? title : `${title} | ${siteData.name}`;
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const normalizePath = (path: string) => path.replace(/\/$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <title>{fullTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-title" href="/">{siteData.name}</a>
+      <nav aria-label="Primary navigation">
+        <ul>
+          {
+            navPages.map((page) => {
+              const href = page.data.route;
+              const isCurrent = normalizePath(href) === currentPath;
+
+              return (
+                <li>
+                  <a href={href} aria-current={isCurrent ? "page" : undefined}>
+                    {page.data.navLabel}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </nav>
+    </header>
+
+    <main class="site-main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-name">{siteData.name}</p>
+      <address>
+        <span>{siteData.contact.name}</span>
+        <span>{siteData.contact.phone}</span>
+        <a href={`mailto:${siteData.contact.email}`}>{siteData.contact.email}</a>
+      </address>
+      <p>{siteData.footer.text}</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color: #1d2521;
+    background: #fffdfa;
+    font-family:
+      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  a {
+    color: #225f52;
+  }
+
+  a:hover {
+    color: #5d3f27;
+  }
+
+  .site-header,
+  .site-main,
+  .site-footer {
+    width: min(100% - 2rem, 58rem);
+    margin-inline: auto;
+  }
+
+  .site-header {
+    padding: 2rem 0 1.25rem;
+    border-bottom: 1px solid #d7d0c7;
+  }
+
+  .site-title {
+    color: #1d2521;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    padding: 0;
+    margin: 1rem 0 0;
+    list-style: none;
+  }
+
+  nav a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  nav a[aria-current="page"] {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  .site-main {
+    padding: 2.5rem 0;
+  }
+
+  .site-footer {
+    padding: 1.5rem 0 2rem;
+    border-top: 1px solid #d7d0c7;
+    color: #46564f;
+    font-size: 0.95rem;
+  }
+
+  .footer-name {
+    color: #1d2521;
+    font-weight: 700;
+  }
+
+  address {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.75rem 0;
+    font-style: normal;
+  }
+
+  .content {
+    max-width: 46rem;
+  }
+
+  .content h1 {
+    margin: 0 0 1.5rem;
+    color: #20382f;
+    font-size: clamp(2rem, 7vw, 3.75rem);
+    line-height: 1.05;
+  }
+
+  .content h2 {
+    margin: 2rem 0 0.75rem;
+    color: #20382f;
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+
+  .content h3 {
+    margin: 0 0 0.75rem;
+    color: #20382f;
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  .content p,
+  .content li {
+    color: #33443d;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .content p {
+    margin: 1rem 0;
+  }
+
+  .entry-list {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .list-entry {
+    padding-top: 1.5rem;
+    border-top: 1px solid #d7d0c7;
+  }
+
+  .contact-info {
+    max-width: 46rem;
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid #d7d0c7;
+  }
+</style>

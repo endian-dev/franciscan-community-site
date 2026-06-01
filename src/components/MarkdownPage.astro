@@ -1,0 +1,15 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+
+interface Props {
+  page: CollectionEntry<"pages">;
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+---
+
+<article class="content">
+  <h1>{page.data.title}</h1>
+  <Content />
+</article>
