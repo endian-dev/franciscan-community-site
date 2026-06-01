@@ -4,7 +4,6 @@ route: /
 navLabel: Home
 navOrder: 10
 description: Secular Franciscans living in Las Vegas, Nevada.
-published: true
 ---
 
 We are Secular Franciscans living in the desert of Las Vegas, Nevada. We are so happy that you have found us. Our fraternity is part of the [Saint Thomas More Region](https://www.stmregionofs.com/), which covers southern Nevada and Arizona.

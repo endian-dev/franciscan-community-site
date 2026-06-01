@@ -8,13 +8,13 @@ const byNavOrder = (
 const byOrder = <T extends { data: { order: number } }>(a: T, b: T) =>
   a.data.order - b.data.order;
 
-export async function getPublishedPages() {
-  const pages = await getCollection("pages", ({ data }) => data.published);
+export async function getPages() {
+  const pages = await getCollection("pages");
   return pages.sort(byNavOrder);
 }
 
 export async function getPageByRoute(route: string) {
-  const pages = await getPublishedPages();
+  const pages = await getPages();
   return pages.find((page) => page.data.route === route);
 }
 
@@ -22,7 +22,7 @@ export async function requirePageByRoute(route: string) {
   const page = await getPageByRoute(route);
 
   if (!page) {
-    throw new Error(`Missing published page content for route: ${route}`);
+    throw new Error(`Missing page content for route: ${route}`);
   }
 
   return page;

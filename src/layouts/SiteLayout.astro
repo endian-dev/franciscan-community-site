@@ -1,5 +1,5 @@
 ---
-import { getPublishedPages } from "@/lib/content";
+import { getPages } from "@/lib/content";
 import { siteData } from "@/lib/site-data";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { title, description = siteData.description } = Astro.props;
-const navPages = await getPublishedPages();
+const navPages = await getPages();
 const fullTitle = title === siteData.name ? title : `${title} | ${siteData.name}`;
 const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
 

@@ -102,7 +102,7 @@ content:
       primary: title
       sort: navOrder
       order: asc
-      fields: [route, navLabel, published]
+      fields: [route, navLabel]
     fields:
       - name: title
         label: Title
@@ -124,9 +124,6 @@ content:
       - name: description
         label: SEO description
         type: text
-      - name: published
-        label: Published
-        type: boolean
       - name: body
         label: Body
         type: rich-text
@@ -205,6 +202,9 @@ content:
       - name: externalUrl
         label: External URL
         type: string
+        pattern:
+          regex: "^$|^https?://"
+          message: "Use an http(s) URL or leave this blank."
       - name: published
         label: Published
         type: boolean

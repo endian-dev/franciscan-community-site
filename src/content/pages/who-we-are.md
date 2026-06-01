@@ -4,7 +4,6 @@ route: /who-we-are
 navLabel: Who We Are
 navOrder: 20
 description: Meeting information for the St. Margaret of Cortona Fraternity.
-published: true
 ---
 
 We meet on the last Sunday of each month at [Saint Gabriel the Archangel Church](https://stgabrielbyzantinecatholicchurch.org/), 2250 East Maule Ave., Las Vegas, Nevada 89118. Saint Gabriel is a Byzantine Rite Catholic Church in communion with Rome. Catholics of all rites are welcome to attend our meetings.

@@ -4,7 +4,6 @@ route: /get-involved
 navLabel: Get Involved
 navOrder: 30
 description: Learn about becoming a Secular Franciscan.
-published: true
 ---
 
 ## Is God calling you to the Secular Franciscan Order?

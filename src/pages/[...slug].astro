@@ -1,12 +1,12 @@
 ---
 import MarkdownPage from "@/components/MarkdownPage.astro";
-import { getPublishedPages } from "@/lib/content";
+import { getPages } from "@/lib/content";
 import { siteData } from "@/lib/site-data";
 import SiteLayout from "@/layouts/SiteLayout.astro";
 
 export async function getStaticPaths() {
   const explicitlyOwnedRoutes = new Set(["/", "/faq", "/news"]);
-  const pages = await getPublishedPages();
+  const pages = await getPages();
 
   return pages
     .filter((page) => !explicitlyOwnedRoutes.has(page.data.route))

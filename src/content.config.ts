@@ -28,7 +28,63 @@ const pageRoute = z.string().refine(
   },
   { message: "Route must be / or a lowercase path such as /who-we-are." }
 );
-const optionalUrl = z.union([z.literal(""), z.url()]);
+
+const isHttpUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+const isUploadedPdfPath = (value: string) => {
+  if (value === "") {
+    return true;
+  }
+
+  const prefix = "/uploads/documents/";
+
+  if (!value.startsWith(prefix)) {
+    return false;
+  }
+
+  const filename = value.slice(prefix.length);
+
+  return (
+    filename.length > 4 &&
+    filename.toLowerCase().endsWith(".pdf") &&
+    !filename.includes("..") &&
+    !filename.includes("/") &&
+    !filename.includes("\\") &&
+    Array.from(filename).every(
+      (char) =>
+        (char >= "a" && char <= "z") ||
+        (char >= "A" && char <= "Z") ||
+        (char >= "0" && char <= "9") ||
+        char === "-" ||
+        char === "_" ||
+        char === "."
+    )
+  );
+};
+
+const optionalHttpUrl = z
+  .string()
+  .optional()
+  .default("")
+  .refine((value) => value === "" || isHttpUrl(value), {
+    message: "External URL must be empty or start with http:// or https://."
+  });
+
+const optionalUploadedPdfPath = z
+  .string()
+  .optional()
+  .default("")
+  .refine(isUploadedPdfPath, {
+    message:
+      "Uploaded file must be empty or a PDF path under /uploads/documents/."
+  });
 
 const pages = defineCollection({
   loader: glob({ base: "./src/content/pages", pattern: "**/*.{md,mdx}" }),
@@ -37,8 +93,7 @@ const pages = defineCollection({
     route: pageRoute,
     navLabel: z.string(),
     navOrder: z.number(),
-    description: z.string().default(""),
-    published: z.boolean().default(true)
+    description: z.string().default("")
   })
 });
 
@@ -57,8 +112,8 @@ const resources = defineCollection({
     title: z.string(),
     order: z.number(),
     linkLabel: z.string().optional().default(""),
-    uploadedFile: z.string().optional().default(""),
-    externalUrl: optionalUrl.optional().default(""),
+    uploadedFile: optionalUploadedPdfPath,
+    externalUrl: optionalHttpUrl,
     published: z.boolean().default(true)
   })
 });
