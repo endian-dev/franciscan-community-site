@@ -20,6 +20,11 @@ test("serves the home page", async ({ page }) => {
       name: "Welcome to the St. Margaret of Cortona Fraternity"
     })
   ).toBeVisible();
+  await expect(
+    page.getByRole("img", {
+      name: "Saint Thomas More Region Secular Franciscan members gathered around a regional banner."
+    })
+  ).toHaveAttribute("src", "/uploads/images/new-rec-2025-2028.jpg");
   await expect(page.getByText("Saint Thomas More Region")).toBeVisible();
 });
 
