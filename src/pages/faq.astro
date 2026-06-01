@@ -1,0 +1,34 @@
+---
+import { getPublishedFaqs, requirePageByRoute } from "@/lib/content";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { render } from "astro:content";
+
+const page = await requirePageByRoute("/faq");
+const { Content: PageContent } = await render(page);
+const faqEntries = await getPublishedFaqs();
+const renderedFaqs = await Promise.all(
+  faqEntries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content
+  }))
+);
+---
+
+<SiteLayout title={page.data.title} description={page.data.description}>
+  <article class="content">
+    <h1>{page.data.title}</h1>
+    <PageContent />
+  </article>
+
+  <section class="entry-list" aria-labelledby="faq-list-heading">
+    <h2 id="faq-list-heading">Questions and answers</h2>
+    {
+      renderedFaqs.map(({ entry, Content }) => (
+        <article class="content list-entry">
+          <h3>{entry.data.question}</h3>
+          <Content />
+        </article>
+      ))
+    }
+  </section>
+</SiteLayout>

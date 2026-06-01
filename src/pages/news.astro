@@ -1,0 +1,44 @@
+---
+import { getPublishedResources, requirePageByRoute } from "@/lib/content";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { render } from "astro:content";
+
+const page = await requirePageByRoute("/news");
+const { Content: PageContent } = await render(page);
+const resourceEntries = await getPublishedResources();
+const renderedResources = await Promise.all(
+  resourceEntries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content
+  }))
+);
+---
+
+<SiteLayout title={page.data.title} description={page.data.description}>
+  <article class="content">
+    <h1>{page.data.title}</h1>
+    <PageContent />
+  </article>
+
+  <section class="entry-list" aria-labelledby="resource-list-heading">
+    <h2 id="resource-list-heading">Resources</h2>
+    {
+      renderedResources.map(({ entry, Content }) => {
+        const href = entry.data.uploadedFile || entry.data.externalUrl;
+        const label = entry.data.linkLabel || `View ${entry.data.title}`;
+
+        return (
+          <article class="content list-entry">
+            <h3>{entry.data.title}</h3>
+            <Content />
+            {href ? (
+              <p>
+                <a href={href}>{label}</a>
+              </p>
+            ) : null}
+          </article>
+        );
+      })
+    }
+  </section>
+</SiteLayout>

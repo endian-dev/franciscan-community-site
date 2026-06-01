@@ -1,0 +1,45 @@
+---
+import MarkdownPage from "@/components/MarkdownPage.astro";
+import { getPages } from "@/lib/content";
+import { siteData } from "@/lib/site-data";
+import SiteLayout from "@/layouts/SiteLayout.astro";
+
+export async function getStaticPaths() {
+  const explicitlyOwnedRoutes = new Set(["/", "/faq", "/news"]);
+  const pages = await getPages();
+
+  return pages
+    .filter((page) => !explicitlyOwnedRoutes.has(page.data.route))
+    .map((page) => ({
+      params: { slug: page.data.route.replace(/^\//, "") },
+      props: { page }
+    }));
+}
+
+const { page } = Astro.props;
+const address = siteData.contact.address;
+const showContactInfo = page.data.route === "/get-involved";
+---
+
+<SiteLayout title={page.data.title} description={page.data.description}>
+  <MarkdownPage page={page} />
+
+  {
+    showContactInfo ? (
+      <section class="contact-info content" aria-labelledby="contact-heading">
+        <h2 id="contact-heading">Contact</h2>
+        <address>
+          <span>{siteData.contact.name}</span>
+          <span>{address.street}</span>
+          <span>
+            {address.city}, {address.region} {address.postalCode}
+          </span>
+          <span>{siteData.contact.phone}</span>
+          <a href={`mailto:${siteData.contact.email}`}>
+            {siteData.contact.email}
+          </a>
+        </address>
+      </section>
+    ) : null
+  }
+</SiteLayout>
