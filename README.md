@@ -23,12 +23,17 @@ pnpm install
 pnpm dev
 pnpm check
 pnpm build
+pnpm test:e2e
 pnpm preview
 pnpm deploy
 ```
 
 `pnpm build` runs `astro check` before `astro build` so type and content
 errors fail the build.
+
+`pnpm test:e2e` runs Playwright smoke tests against `pnpm preview`. Build the
+site first with `pnpm build`, and install the Chromium test browser with
+`pnpm exec playwright install chromium` if it is not already available locally.
 
 ## Deployment
 
