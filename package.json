@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro check && astro build",
+    "check:uploads": "node scripts/check-uploads.mjs",
+    "build": "pnpm check:uploads && astro check && astro build",
     "preview": "astro preview",
     "deploy": "wrangler deploy",
     "test:e2e": "playwright test"

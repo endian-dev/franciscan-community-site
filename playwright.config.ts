@@ -11,6 +11,8 @@ export default defineConfig({
   reporter: process.env.CI ? "github" : "list",
   use: {
     baseURL: "http://127.0.0.1:4321",
+    screenshot: "off",
+    video: "off",
     trace: "on-first-retry"
   },
   webServer: {
@@ -23,9 +25,18 @@ export default defineConfig({
   },
   projects: [
     {
-      name: "chromium",
+      name: "chromium-desktop",
       use: {
-        browserName: "chromium"
+        browserName: "chromium",
+        viewport: { width: 1280, height: 900 }
+      }
+    },
+    {
+      name: "chromium-mobile",
+      use: {
+        browserName: "chromium",
+        viewport: { width: 390, height: 844 },
+        isMobile: true
       }
     }
   ]

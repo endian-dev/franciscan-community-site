@@ -1,6 +1,10 @@
 {
   "name": "St. Margaret of Cortona Fraternity",
   "description": "Secular Franciscans living in Las Vegas, Nevada.",
+  "homeHero": {
+    "image": "",
+    "imageAlt": ""
+  },
   "contact": {
     "name": "Colleen Malloy, OFS",
     "email": "stmargaretofcortona@endian.dev",
