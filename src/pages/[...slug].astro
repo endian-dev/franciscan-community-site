@@ -26,10 +26,15 @@ const showContactInfo = page.data.route === "/get-involved";
 
   {
     showContactInfo ? (
-      <section class="contact-info content" aria-labelledby="contact-heading">
+      <section
+        class="contact-info content page-narrow"
+        aria-labelledby="contact-heading"
+      >
         <h2 id="contact-heading">Contact</h2>
         <address>
-          <span>{siteData.contact.name}</span>
+          <a href="https://stgabrielbyzantinecatholicchurch.org/">
+            {siteData.contact.name}
+          </a>
           <span>{address.street}</span>
           <span>
             {address.city}, {address.region} {address.postalCode}

@@ -13,18 +13,18 @@ test("serves the home page", async ({ page }) => {
 
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle(
-    "Welcome to the St. Margaret of Cortona Fraternity | St. Margaret of Cortona Fraternity"
+    "WELCOME TO THE ST MARGARET OF CORTONA FRATERNITY | St Margaret of Cortona Fraternity"
   );
   await expect(
     page.getByRole("heading", {
-      name: "Welcome to the St. Margaret of Cortona Fraternity"
+      name: "WELCOME TO THE ST MARGARET OF CORTONA FRATERNITY"
     })
   ).toBeVisible();
   await expect(
     page.getByRole("img", {
-      name: "Saint Thomas More Region Secular Franciscan members gathered around a regional banner."
+      name: "Saint Margaret of Cortona - A Franciscan Saint"
     })
-  ).toHaveAttribute("src", "/uploads/images/new-rec-2025-2028.jpg");
+  ).toHaveAttribute("src", "/uploads/images/st-margaret-of-cortona.jpg");
   await expect(page.getByText("Saint Thomas More Region")).toBeVisible();
 });
 
@@ -37,18 +37,13 @@ test("serves each fixed content route", async ({ page }) => {
     },
     {
       path: "/get-involved",
-      heading: "Get Involved",
-      text: "Is God calling you to the Secular Franciscan Order?"
+      heading: "Is God Calling You to the Secular Franciscan Order?",
+      text: "To become a Secular Franciscan"
     },
     {
       path: "/news",
       heading: "Regional Franciscan News",
-      text: "Early spring issue of Our Franciscan Scoop"
-    },
-    {
-      path: "/faq",
-      heading: "FAQ",
-      text: "What is the best way to find out about joining the Secular Franciscans?"
+      text: "Early spring publication of Our Franciscan Scoop"
     }
   ];
 
@@ -61,6 +56,16 @@ test("serves each fixed content route", async ({ page }) => {
     ).toBeVisible();
     await expect(page.getByText(route.text)).toBeVisible();
   }
+
+  const faqResponse = await page.goto("/faq");
+
+  expect(faqResponse?.status()).toBe(200);
+  await expect(
+    page.getByRole("heading", { name: "Q: WHO ARE THE FRANCISCANS?" })
+  ).toBeVisible();
+  await expect(
+    page.getByText("Alternatiely email : hello@franciscanseculars.com")
+  ).toBeVisible();
 });
 
 test("renders static contact information without a dead form", async ({ page }) => {
@@ -69,12 +74,13 @@ test("renders static contact information without a dead form", async ({ page }) 
   const contact = page.locator(".contact-info");
 
   await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
-  await expect(contact.getByText("4240 Miaomiao Ave")).toBeVisible();
+  await expect(contact.getByText("4240 Porticella Ave")).toBeVisible();
   await expect(contact.getByText("North Las Vegas, NV 89084")).toBeVisible();
   await expect(
-    contact.getByRole("link", { name: "stmargaretofcortona@endian.dev" })
+    contact.getByRole("link", { name: "cmalloy925@gmail.com" })
   ).toBeVisible();
-  await expect(page.getByLabel("First Name")).toHaveCount(0);
+  await expect(page.locator('input[name="first-name"]')).toHaveCount(0);
+  await expect(page.locator("textarea")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Send" })).toHaveCount(0);
 });
 
@@ -82,14 +88,14 @@ test("renders FAQ entries from the content collection", async ({ page }) => {
   await page.goto("/faq");
 
   await expect(
-    page.getByRole("heading", { name: /Who are the Franciscans/i })
+    page.getByRole("heading", { name: "Q: WHO ARE THE FRANCISCANS?" })
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: /What if I realize I am not called to be a Secular Franciscan/i
+      name: "Q: WHAT IF I REALISE I’M NOT CALLED TO BE A SECULAR FRANCISCAN?"
     })
   ).toBeVisible();
-  await expect(page.locator(".list-entry")).toHaveCount(13);
+  await expect(page.locator(".faq-entry")).toHaveCount(13);
 });
 
 test("renders resource links and text-only resources intentionally", async ({
@@ -98,13 +104,15 @@ test("renders resource links and text-only resources intentionally", async ({
   await page.goto("/news");
 
   await expect(
-    page.getByRole("link", { name: "View Summer 2025 PDF" })
+    page.getByRole("link", { name: "Summer publication" }).first()
   ).toHaveAttribute(
     "href",
     "https://www.stmregionofs.com/_files/ugd/9af1c7_9b9850224ce048f1b3f8ec01bcd755ff.pdf"
   );
   await expect(
-    page.getByText("No document link is currently available.")
+    page.getByText(
+      "Early summer publication of Our Franciscan Scoop for the St. Thomas More Region of of Secular Franciscan."
+    )
   ).toBeVisible();
 });
 
@@ -116,29 +124,18 @@ test("primary navigation links work", async ({ page }) => {
     .getByRole("link", { name: "FAQ" })
     .click();
   await expect(page).toHaveURL("/faq");
-  await expect(page.getByRole("heading", { name: "FAQ" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Q: WHO ARE THE FRANCISCANS?" })
+  ).toBeVisible();
 });
 
-test("primary navigation keeps Get Involved as the final CTA", async ({
-  page
-}) => {
+test("primary navigation mirrors the Wix page order", async ({ page }) => {
   await page.goto("/");
 
   const nav = page.getByRole("navigation", { name: "Primary navigation" });
-  const viewportWidth = page.viewportSize()?.width ?? 0;
-  const expectedLinks =
-    viewportWidth <= 480
-      ? ["Who We Are", "News", "FAQ", "Get Involved"]
-      : ["Home", "Who We Are", "News", "FAQ", "Get Involved"];
+  const expectedLinks = ["Home", "Who We Are", "Get Involved", "News", "FAQ"];
 
   await expect(nav.getByRole("link")).toHaveText(expectedLinks);
-
-  const cta = nav.getByRole("link", { name: "Get Involved" });
-  await expect(cta).toHaveClass(/primary-nav__link--cta/);
-
-  if (viewportWidth <= 480) {
-    await expect(nav.getByRole("link", { name: "Home" })).toHaveCount(0);
-  }
 });
 
 test("keeps key layouts readable across configured viewports", async ({
@@ -151,19 +148,20 @@ test("keeps key layouts readable across configured viewports", async ({
   ).toBeVisible();
   await expect(
     page.getByRole("heading", {
-      name: "Welcome to the St. Margaret of Cortona Fraternity"
+      name: "WELCOME TO THE ST MARGARET OF CORTONA FRATERNITY"
     })
   ).toBeVisible();
   await expect(
-    page.locator(".home-hero__actions").getByRole("link", {
-      name: "Get involved"
+    page.getByRole("img", {
+      name: "Saint Margaret of Cortona - A Franciscan Saint"
     })
   ).toBeVisible();
+  await expect(page.locator(".home-hero__actions")).toHaveCount(0);
   await expectNoHorizontalOverflow(page);
 
   await page.goto("/faq");
   await expect(
-    page.getByRole("heading", { name: "Questions and answers" })
+    page.getByRole("heading", { name: "Q: WHO ARE THE FRANCISCANS?" })
   ).toBeVisible();
   await expect(page.locator(".faq-entry").first()).toBeVisible();
   await expectNoHorizontalOverflow(page);
@@ -172,15 +170,20 @@ test("keeps key layouts readable across configured viewports", async ({
   await expect(
     page.getByRole("heading", { name: "Regional Franciscan News" })
   ).toBeVisible();
-  await expect(page.locator(".resource-entry").first()).toBeVisible();
+  await expect(page.locator(".news-entry").first()).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "View Summer 2025 PDF" })
+    page.getByRole("link", { name: "Summer publication" }).first()
   ).toBeVisible();
   await expectNoHorizontalOverflow(page);
 
   await page.goto("/get-involved");
-  await expect(page.locator(".site-footer")).toContainText("4240 Miaomiao Ave");
-  await expect(page.locator(".site-footer")).toContainText(
+  await expect(page.locator(".site-footer")).not.toContainText(
+    "4240 Porticella Ave"
+  );
+  await expect(page.locator(".contact-info")).toContainText(
+    "4240 Porticella Ave"
+  );
+  await expect(page.locator(".contact-info")).toContainText(
     "North Las Vegas, NV 89084"
   );
   await expectNoHorizontalOverflow(page);
@@ -191,8 +194,19 @@ test("serves the custom 404 page for missing routes", async ({ page }) => {
 
   expect(response?.status()).toBe(404);
   await expect(page).toHaveTitle(
-    "Page not found | St. Margaret of Cortona Fraternity"
+    "Page not found | St Margaret of Cortona Fraternity"
   );
+  await expect(
+    page.getByRole("heading", { name: "Page not found" })
+  ).toBeVisible();
+});
+
+test("treats the Wix fullscreen placeholder route as not found", async ({
+  page
+}) => {
+  const response = await page.goto("/fullscreen-page");
+
+  expect(response?.status()).toBe(404);
   await expect(
     page.getByRole("heading", { name: "Page not found" })
   ).toBeVisible();

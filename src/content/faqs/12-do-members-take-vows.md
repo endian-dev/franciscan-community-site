@@ -1,9 +1,7 @@
 ---
-question: Do members of the OFS take vows?
+question: DO MEMBERS OF THE OFS TAKE VOWS?
 order: 120
 published: true
 ---
 
-When ready, candidates make a public profession during Holy Mass. Our commitment and profession join us to the whole Franciscan family and are for all our life.
-
-It is the brothers and sisters, friars and nuns, of the First and Second Orders and the Third Order Regular who take vows of poverty, chastity, and obedience. The Franciscan religious orders include the Order of Friars Minor (OFM), OFM Conventual, the Friars Minor Capuchin, and the Poor Clares. Members of the First, Second, and Third Orders are Franciscans: priests, brothers, sisters, religious, and lay people who make a profession of faith.
+A: When ready candidates make a public profession during Holy Mass, our commitment and profession joins us to the whole Franciscan family and is for all our life. It is the Brothers and Sisters, Friars and Nuns, of the First and Second Orders, and the Third Order Regular, who take vows of poverty, chastity and obedience. The Franciscan Religious Orders include the Order of Friars Minor (OFM), OFM Conventual, the Friars Minor and OFM Capuchin, the Poor Clares, The members of the 1st, 2nd and 3rd orders are all Franciscans Priest, Brothers, Sisters, Religious who all take vows and Lay people who make a profession of faith.

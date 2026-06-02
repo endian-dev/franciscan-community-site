@@ -1,22 +1,22 @@
 {
-  "name": "St. Margaret of Cortona Fraternity",
+  "name": "St Margaret of Cortona Fraternity",
   "description": "Secular Franciscans living in Las Vegas, Nevada.",
   "homeHero": {
-    "image": "/uploads/images/new-rec-2025-2028.jpg",
-    "imageAlt": "Saint Thomas More Region Secular Franciscan members gathered around a regional banner."
+    "image": "/uploads/images/st-margaret-of-cortona.jpg",
+    "imageAlt": "Saint Margaret of Cortona - A Franciscan Saint"
   },
   "contact": {
     "name": "Colleen Malloy, OFS",
-    "email": "stmargaretofcortona@endian.dev",
+    "email": "cmalloy925@gmail.com",
     "phone": "917-594-0872",
     "address": {
-      "street": "4240 Miaomiao Ave",
+      "street": "4240 Porticella Ave",
       "city": "North Las Vegas",
       "region": "NV",
       "postalCode": "89084"
     }
   },
   "footer": {
-    "text": "Copyright 2026 by St. Margaret of Cortona Fraternity."
+    "text": "©2023 by St Margaret of Cortona Fraternity. Proudly created with Wix.com"
   }
 }

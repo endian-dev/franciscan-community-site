@@ -112,6 +112,7 @@ const resources = defineCollection({
     title: z.string(),
     order: z.number(),
     linkLabel: z.string().optional().default(""),
+    summary: z.string().optional().default(""),
     uploadedFile: optionalUploadedPdfPath,
     externalUrl: optionalHttpUrl,
     published: z.boolean().default(true)
