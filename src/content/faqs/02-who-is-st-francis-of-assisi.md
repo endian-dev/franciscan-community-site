@@ -1,11 +1,7 @@
 ---
-question: Who is St. Francis of Assisi?
+question: WHO IS ST. FRANCIS OF ASSISI?
 order: 20
 published: true
 ---
 
-St. Francis of Assisi, Italian San Francesco d'Assisi, baptized Giovanni and renamed Francesco, was born in 1181 or 1182 in Assisi and died on October 3, 1226. He was canonized on July 16, 1228, and his feast day is October 4.
-
-He founded the Franciscan orders of the Friars Minor, the women of the Order of St. Clare, and the lay Third Order. He was also a leader of the movement of evangelical poverty in the early 13th century.
-
-His evangelical zeal, consecration to poverty, charity, and personal charisma drew thousands of followers. Francis's devotion to the human Jesus and his desire to follow Jesus' example reflected and reinforced important developments in medieval spirituality. The Poverello, or "Poor Little Man," is one of the most venerated religious figures in Roman Catholic history. He and St. Catherine of Siena are the patron saints of Italy. In 1979, Pope John Paul II recognized him as the patron saint of ecology.
+A: St. Francis of Assisi, Italian San Francesco d’Assisi, baptized Giovanni, renamed Francesco, in full Francesco di Pietro di Bernardone, (born 1181/82, Assisi, duchy of Spoleto \[Italy]—died October 3, 1226, Assisi; canonized July 16, 1228; feast day October 4), founder of the [Franciscan](https://www.britannica.com/topic/Franciscans) orders of the Friars Minor (Ordo Fratrum Minorum), the women’s Order of St. Clare (the [Poor Clares](https://www.britannica.com/topic/Poor-Clares)), and the lay Third Order. He was also a leader of the movement of evangelical [poverty](https://www.britannica.com/topic/poverty) in the early 13th century. His evangelical zeal, consecration to poverty, [charity](https://www.britannica.com/topic/charity-Christian-concept), and personal [charisma](https://www.merriam-webster.com/dictionary/charisma) drew thousands of followers. Francis’s devotion to the human [Jesus](https://www.britannica.com/biography/Jesus) and his desire to follow Jesus’ example reflected and reinforced important developments in [medieval](https://www.merriam-webster.com/dictionary/medieval) spirituality. The Poverello (“Poor Little Man”) is one of the most venerated religious figures in Roman Catholic history, and he and [St. Catherine of Siena](https://www.britannica.com/biography/Saint-Catherine-of-Siena) are the [patron saints](https://www.britannica.com/topic/patron-saint) of [Italy](https://www.britannica.com/place/Italy). In 1979 [Pope John Paul II](https://www.britannica.com/biography/Saint-John-Paul-II) recognized him as the patron saint of [ecology](https://www.britannica.com/science/ecology).

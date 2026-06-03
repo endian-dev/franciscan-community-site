@@ -7,4 +7,4 @@ externalUrl: ""
 published: true
 ---
 
-Early summer issue of *Our Franciscan Scoop* for the St. Thomas More Region of Secular Franciscans. No document link is currently available.
+Early summer publication of Our Franciscan Scoop for the St. Thomas More Region of of Secular Franciscan.
