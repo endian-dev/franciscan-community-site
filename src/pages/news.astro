@@ -1,9 +1,16 @@
 ---
 import { getPublishedResources, requirePageByRoute } from "@/lib/content";
 import SiteLayout from "@/layouts/SiteLayout.astro";
+import { render } from "astro:content";
 
 const page = await requirePageByRoute("/news");
 const resourceEntries = await getPublishedResources();
+const renderedResources = await Promise.all(
+  resourceEntries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content
+  }))
+);
 ---
 
 <SiteLayout title={page.data.title} description={page.data.description}>
@@ -13,18 +20,18 @@ const resourceEntries = await getPublishedResources();
 
   <section class="news-list page-narrow" aria-label="Regional newsletter links">
     {
-      resourceEntries.map((entry) => {
+      renderedResources.map(({ entry, Content }) => {
         const href = entry.data.uploadedFile || entry.data.externalUrl;
-        const label = entry.data.linkLabel;
+        const label = entry.data.linkLabel || `View ${entry.data.title}`;
 
         return (
           <article class="news-entry">
             <h2>{entry.data.title}</h2>
-            <p>
-              {href && label ? <a href={href}>{label}</a> : null}
-              {href && label && entry.data.summary ? " " : null}
-              {entry.data.summary}
-            </p>
+            <div class="news-entry__description">
+              {href ? <a href={href}>{label}</a> : null}
+              {href ? " " : null}
+              <Content />
+            </div>
           </article>
         );
       })

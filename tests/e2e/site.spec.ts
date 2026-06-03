@@ -74,6 +74,10 @@ test("renders static contact information without a dead form", async ({ page }) 
   const contact = page.locator(".contact-info");
 
   await expect(page.getByRole("heading", { name: "Contact" })).toBeVisible();
+  await expect(contact.getByText("Colleen Malloy, OFS")).toBeVisible();
+  await expect(
+    contact.getByRole("link", { name: "Colleen Malloy, OFS" })
+  ).toHaveCount(0);
   await expect(contact.getByText("4240 Porticella Ave")).toBeVisible();
   await expect(contact.getByText("North Las Vegas, NV 89084")).toBeVisible();
   await expect(

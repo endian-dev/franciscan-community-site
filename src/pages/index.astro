@@ -6,6 +6,8 @@ import { render } from "astro:content";
 
 const page = await requirePageByRoute("/");
 const { Content } = await render(page);
+const homeImage = siteData.homeHero.image;
+const hasHomeImage = homeImage.length > 0;
 ---
 
 <SiteLayout title={page.data.title} description={page.data.description}>
@@ -14,12 +16,16 @@ const { Content } = await render(page);
     <Content />
   </article>
 
-  <img
-    class="home-portrait"
-    src={siteData.homeHero.image}
-    alt={siteData.homeHero.imageAlt}
-    width="220"
-    height="302"
-    loading="eager"
-  />
+  {
+    hasHomeImage ? (
+      <img
+        class="home-portrait"
+        src={homeImage}
+        alt={siteData.homeHero.imageAlt}
+        width="220"
+        height="302"
+        loading="eager"
+      />
+    ) : null
+  }
 </SiteLayout>
