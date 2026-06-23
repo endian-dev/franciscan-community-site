@@ -77,36 +77,6 @@ content:
             label: Phone
             type: string
             required: true
-          - name: address
-            label: Address
-            type: object
-            required: true
-            fields:
-              - name: street
-                label: Street
-                type: string
-                required: true
-              - name: city
-                label: City
-                type: string
-                required: true
-              - name: region
-                label: State
-                type: string
-                required: true
-              - name: postalCode
-                label: ZIP code
-                type: string
-                required: true
-      - name: footer
-        label: Footer
-        type: object
-        required: true
-        fields:
-          - name: text
-            label: Footer text
-            type: string
-            required: true
 
   - name: pages
     label: Fixed pages
