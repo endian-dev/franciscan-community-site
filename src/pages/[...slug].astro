@@ -17,7 +17,6 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props;
-const address = siteData.contact.address;
 const showContactInfo = page.data.route === "/get-involved";
 ---
 
@@ -33,10 +32,6 @@ const showContactInfo = page.data.route === "/get-involved";
         <h2 id="contact-heading">Contact</h2>
         <address>
           <span>{siteData.contact.name}</span>
-          <span>{address.street}</span>
-          <span>
-            {address.city}, {address.region} {address.postalCode}
-          </span>
           <span>{siteData.contact.phone}</span>
           <a href={`mailto:${siteData.contact.email}`}>
             {siteData.contact.email}

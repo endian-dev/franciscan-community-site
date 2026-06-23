@@ -78,8 +78,9 @@ test("renders static contact information without a dead form", async ({ page }) 
   await expect(
     contact.getByRole("link", { name: "Colleen Malloy, OFS" })
   ).toHaveCount(0);
-  await expect(contact.getByText("4240 Porticella Ave")).toBeVisible();
-  await expect(contact.getByText("North Las Vegas, NV 89084")).toBeVisible();
+  await expect(contact.getByText("4240 Porticella Ave")).toHaveCount(0);
+  await expect(contact.getByText("North Las Vegas, NV 89084")).toHaveCount(0);
+  await expect(contact.getByText("917-594-0872")).toBeVisible();
   await expect(
     contact.getByRole("link", { name: "cmalloy925@gmail.com" })
   ).toBeVisible();
@@ -203,10 +204,10 @@ test("keeps key layouts readable across configured viewports", async ({
     "Proudly created with Wix.com"
   );
   await expect(page.locator(".footer-credit")).toHaveCount(0);
-  await expect(page.locator(".contact-info")).toContainText(
+  await expect(page.locator(".contact-info")).not.toContainText(
     "4240 Porticella Ave"
   );
-  await expect(page.locator(".contact-info")).toContainText(
+  await expect(page.locator(".contact-info")).not.toContainText(
     "North Las Vegas, NV 89084"
   );
   await expectNoHorizontalOverflow(page);

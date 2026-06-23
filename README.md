@@ -156,8 +156,7 @@ When setting a hero image, provide meaningful alt text.
 Update contact information:
 
 - Edit `src/data/site.json`.
-- Update `contact.name`, `contact.email`, `contact.phone`, and
-  `contact.address`.
+- Update `contact.name`, `contact.email`, and `contact.phone`.
 - The Get Involved page and footer both read from this shared data.
 
 Add an FAQ:
