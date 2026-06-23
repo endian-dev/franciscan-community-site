@@ -79,7 +79,7 @@ the site structure.
 
 | Content | Path | Notes |
 | --- | --- | --- |
-| Site settings | `src/data/site.json` | Site name, description, home hero image, contact info, footer text |
+| Site settings | `src/data/site.json` | Site name, description, home hero image, and contact info |
 | Fixed pages | `src/content/pages/*.md` | Home, Who We Are, Get Involved, News, FAQ |
 | FAQ entries | `src/content/faqs/*.md` | One Markdown file per question |
 | News/resources | `src/content/resources/*.md` | One Markdown file per newsletter/resource |

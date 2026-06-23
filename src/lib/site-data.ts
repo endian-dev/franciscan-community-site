@@ -36,9 +36,6 @@ const siteDataSchema = z.object({
       region: z.string().min(1),
       postalCode: z.string().min(1)
     })
-  }),
-  footer: z.object({
-    text: z.string().min(1)
   })
 });
 

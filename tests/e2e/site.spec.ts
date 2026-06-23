@@ -88,6 +88,21 @@ test("renders static contact information without a dead form", async ({ page }) 
   await expect(page.getByRole("button", { name: "Send" })).toHaveCount(0);
 });
 
+test("renders the approved location map on Who We Are", async ({ page }) => {
+  await page.goto("/who-we-are");
+
+  const map = page.getByTitle("Map to Catholic Charities of Southern Nevada");
+
+  await expect(
+    page.getByRole("heading", { name: "Where We Meet" })
+  ).toBeVisible();
+  await expect(map).toBeVisible();
+  await expect(map).toHaveAttribute(
+    "src",
+    /https:\/\/www\.google\.com\/maps\/embed/
+  );
+});
+
 test("renders FAQ entries from the content collection", async ({ page }) => {
   await page.goto("/faq");
 
@@ -184,6 +199,10 @@ test("keeps key layouts readable across configured viewports", async ({
   await expect(page.locator(".site-footer")).not.toContainText(
     "4240 Porticella Ave"
   );
+  await expect(page.locator(".site-footer")).not.toContainText(
+    "Proudly created with Wix.com"
+  );
+  await expect(page.locator(".footer-credit")).toHaveCount(0);
   await expect(page.locator(".contact-info")).toContainText(
     "4240 Porticella Ave"
   );
