@@ -78,14 +78,32 @@ test("renders static contact information without a dead form", async ({ page }) 
   await expect(
     contact.getByRole("link", { name: "Colleen Malloy, OFS" })
   ).toHaveCount(0);
-  await expect(contact.getByText("4240 Porticella Ave")).toBeVisible();
-  await expect(contact.getByText("North Las Vegas, NV 89084")).toBeVisible();
+  await expect(contact.getByText("4240 Porticella Ave")).toHaveCount(0);
+  await expect(contact.getByText("North Las Vegas, NV 89084")).toHaveCount(0);
+  await expect(contact.getByText("917-594-0872")).toBeVisible();
   await expect(
     contact.getByRole("link", { name: "cmalloy925@gmail.com" })
   ).toBeVisible();
   await expect(page.locator('input[name="first-name"]')).toHaveCount(0);
   await expect(page.locator("textarea")).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Send" })).toHaveCount(0);
+});
+
+test("renders the approved location map on Who We Are", async ({ page }) => {
+  await page.goto("/who-we-are");
+
+  const map = page.getByTitle(
+    "Map to St. Gabriel the Archangel Catholic Church"
+  );
+
+  await expect(
+    page.getByRole("heading", { name: "Where We Meet" })
+  ).toBeVisible();
+  await expect(map).toBeVisible();
+  await expect(map).toHaveAttribute(
+    "src",
+    /https:\/\/www\.google\.com\/maps\/embed/
+  );
 });
 
 test("renders FAQ entries from the content collection", async ({ page }) => {
@@ -184,10 +202,14 @@ test("keeps key layouts readable across configured viewports", async ({
   await expect(page.locator(".site-footer")).not.toContainText(
     "4240 Porticella Ave"
   );
-  await expect(page.locator(".contact-info")).toContainText(
+  await expect(page.locator(".site-footer")).not.toContainText(
+    "Proudly created with Wix.com"
+  );
+  await expect(page.locator(".footer-credit")).toHaveCount(0);
+  await expect(page.locator(".contact-info")).not.toContainText(
     "4240 Porticella Ave"
   );
-  await expect(page.locator(".contact-info")).toContainText(
+  await expect(page.locator(".contact-info")).not.toContainText(
     "North Las Vegas, NV 89084"
   );
   await expectNoHorizontalOverflow(page);
