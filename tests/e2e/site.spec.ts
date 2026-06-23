@@ -92,7 +92,9 @@ test("renders static contact information without a dead form", async ({ page }) 
 test("renders the approved location map on Who We Are", async ({ page }) => {
   await page.goto("/who-we-are");
 
-  const map = page.getByTitle("Map to Catholic Charities of Southern Nevada");
+  const map = page.getByTitle(
+    "Map to St. Gabriel the Archangel Catholic Church"
+  );
 
   await expect(
     page.getByRole("heading", { name: "Where We Meet" })
